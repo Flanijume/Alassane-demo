@@ -1,0 +1,8 @@
+project = "knova"
+region  = "us-east-1"
+bastion_allowed_cidr = ["YOUR.IP.ADDR.0/24"]
+
+# Change these for DB
+db_username = "appuser"
+db_password = "ChangeMe123!"
+db_name     = "appdb"
