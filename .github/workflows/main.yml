@@ -35,12 +35,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Configure AWS credentials (OIDC)
+        id: aws_creds
+        continue-on-error: true   # 👈 This lets the workflow continue even if it fails
         uses: aws-actions/configure-aws-credentials@v4
         with:
-            role-to-assume: arn:aws:iam::029148192067:role/github-actions-oidc-role
-            aws-region: us-east-1
+          role-to-assume: arn:aws:iam::029148192067:role/github-actions-oidc-role
+          aws-region: us-east-1
+
+      - name: Debug OIDC environment
+        run: |
+          echo "==== GITHUB CONTEXT INFO ===="
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Ref: $GITHUB_REF"
+          echo "Actor: $GITHUB_ACTOR"
+          echo "==== JWT Token Preview ===="
+          curl -sLS "$ACTIONS_ID_TOKEN_REQUEST_URL" -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" | jq .
+
       - name: Verify AWS identity
-        run: aws sts get-caller-identity   
+        if: steps.aws_creds.outcome == 'success'  
+        run: aws sts get-caller-identity  
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
       - name: Install Helm
