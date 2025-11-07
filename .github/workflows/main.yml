@@ -39,6 +39,8 @@ jobs:
         with:
             role-to-assume: arn:aws:iam::029148192067:role/github-actions-oidc-role
             aws-region: us-east-1
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity   
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
       - name: Install Helm
