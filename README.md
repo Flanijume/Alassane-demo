@@ -1,4 +1,4 @@
-# DevOps/Infrastructure Engineer Exercise
+# Knova DevOps/Infrastructure Engineer Exercise
 
 This repository contains a **time-boxed** implementation of the requested exercise: minimal cloud infra (Terraform), a simple containerized API, a Helm chart for Kubernetes, and a GitHub Actions pipeline. It focuses on **structure, automation, and documentation** over complete production-hardening.
 
