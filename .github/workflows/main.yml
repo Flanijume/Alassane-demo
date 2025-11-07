@@ -21,7 +21,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build image
-        run: docker build -t hello-api:latest ./Alassane-demo/app
+        run: docker build -t hello-api:latest ./app
       - name: Run tests (placeholder)
         run: echo "No tests yet" && exit 0
 
