@@ -60,6 +60,13 @@ module "eks" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
+  # Enable both private and public access for testing/demo
+  cluster_endpoint_public_access  = true
+  cluster_endpoint_private_access = true
+
+  # Allow API access from anywhere (OK for demo — tighten later)
+  cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
+
   eks_managed_node_groups = {
     default = {
       min_size       = 2
@@ -69,7 +76,6 @@ module "eks" {
     }
   }
 }
-
 # --- Security Group for DB allowing only EKS nodes ---
 resource "aws_security_group" "db" {
   name        = "${local.name}-db-sg"
