@@ -122,5 +122,6 @@ jobs:
           helm upgrade --install hello-api .             --set image.repository="$IMG_REPO"             --set image.tag="latest"             --wait --timeout 5m
       - name: Verify rollout
         run: kubectl rollout status deployment/hello-api
+        
 
         
