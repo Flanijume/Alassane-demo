@@ -8,7 +8,7 @@ on:
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
-  EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME || ' 'knova-eks-demo'' }}
+  EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME || ' 'utrain-eks--ntXhS0'' }}
   REGISTRY: ${{ vars.REGISTRY || '' }} # e.g., <acct>.dkr.ecr.us-east-1.amazonaws.com/hello-api
 
 jobs:
