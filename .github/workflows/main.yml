@@ -8,11 +8,7 @@ on:
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
-<<<<<<< HEAD
-  EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME || 'utrain-eks--ntXhS0' }}
-=======
   EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME || ' 'utrain-eks--ntXhS0'' }}
->>>>>>> 0405310c96225c370bbd5728d7c29553bd21e7f5
   REGISTRY: ${{ vars.REGISTRY || '' }} # e.g., <acct>.dkr.ecr.us-east-1.amazonaws.com/hello-api
 
 jobs:
@@ -128,7 +124,5 @@ jobs:
         run: kubectl rollout status deployment/hello-api
         
 
-<<<<<<< HEAD
-=======
+
         
->>>>>>> 0405310c96225c370bbd5728d7c29553bd21e7f5
