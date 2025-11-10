@@ -4,3 +4,6 @@ terraform.tfstate
 .terraform
 
 terraform.tfstate.backup
+
+bastion_id_rsa 
+bastion_id_rsa.pub

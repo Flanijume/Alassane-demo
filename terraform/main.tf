@@ -48,7 +48,6 @@ module "bastion" {
   vpc_security_group_ids = [module.bastion_sg.security_group_id]
   key_name = aws_key_pair.bastion.key_name
 }
-
 # --- EKS ---
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
@@ -60,11 +59,9 @@ module "eks" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-  # Enable both private and public access for testing/demo
+  # Enable both private and public endpoint access for GitHub Actions and CloudShell
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
-
-  # Allow API access from anywhere (OK for demo — tighten later)
   cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
 
   eks_managed_node_groups = {
@@ -75,7 +72,39 @@ module "eks" {
       instance_types = ["t3.medium"]
     }
   }
+
+  # 👇 Add EKS Access Entries for CloudShell IAM User and GitHub OIDC Role
+  access_entries = {
+    # CloudShell IAM User
+    cloudshell_admin = {
+      principal_arn = "arn:aws:iam::029148192067:role/eks-admin-role"
+
+      policy_associations = {
+        cluster_admin = {
+          policy_arn   = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            type = "cluster"        # 👈 Required (cluster or namespace)
+          }
+        }
+      }
+    }
+
+    # GitHub Actions OIDC Role
+    github_actions = {
+      principal_arn = "arn:aws:iam::029148192067:role/github-actions-oidc-role"
+
+      policy_associations = {
+        cluster_admin = {
+          policy_arn   = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            type = "cluster"        # 👈 Required
+          }
+        }
+      }
+    }
+  }
 }
+
 # --- Security Group for DB allowing only EKS nodes ---
 resource "aws_security_group" "db" {
   name        = "${local.name}-db-sg"
